@@ -19,8 +19,8 @@ from os.path import basename as b
 from scipy.io import loadmat
 
 
-# In[96]:
-
+# In[111]:
+# reshape the image to 227*227*3 since this is the input size for alexnet
 def prepare_image(original_image_path):
     image = misc.imread(original_image_path)
     # scale the image to 227*227
@@ -28,15 +28,20 @@ def prepare_image(original_image_path):
     return scaled_image, image.shape[0], image.shape[1]
 
 
-# In[97]:
-
+# In[112]:
+# reshape the label accordingly. Notice label[0] should be rescaled by width
+# label[1] should be rescaled by height. I guess this is what we should do (might reverse width and height? if the output is not good)
+# refer to: https://github.com/samitok/deeppose/blob/master/Codes/Original/GetLSPData.py scale_label function
 def scale_label(label, original_height, original_width):
-    label[:, :] *= (227 / float(original_width))
+    label[0, :] *= (227 / float(original_width))
+    label[1,:] *= (227 / float(original_height))
     return label
 
 
-# In[98]:
-
+# In[113]:
+# each image x has shape 227*227*3, each label y has shape 3*14 
+# each image_list contains num_examples images. Each label_list contains num_examples labels
+# image_list[i] has label label_list[i]
 def generate_dataset(image_paths,labels,dataset):
     num_examples = image_paths.shape[0]
     image_list = []
@@ -51,8 +56,8 @@ def generate_dataset(image_paths,labels,dataset):
     return image_list,label_list
 
 
-# In[99]:
-
+# In[114]:
+# get the train,val,test dataset
 def getLSPDataset(train_set_ratio=0.8,validation_set_ratio = 0.1):
     print('Resizing and packing images and labels to lists.\n')
     np.random.seed(1701)  # to fix test set
@@ -95,6 +100,6 @@ def getLSPDataset(train_set_ratio=0.8,validation_set_ratio = 0.1):
     return train_list,train_label,val_list,val_label,test_list,test_label
 
 
-# In[110]:
+# In[115]:
 
 #train_list,train_label,val_list,val_label,test_list,test_label = getLSPDataset()
