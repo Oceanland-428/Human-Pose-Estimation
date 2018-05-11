@@ -53,7 +53,7 @@ def generate_dataset(image_paths,labels,dataset):
         label = scale_label(labels[index], or_height, or_width)
         label_list.append(label)
     print('Done processing the ' + dataset + ' dataset')
-    return image_list,label_list
+    return np.array(image_list), np.array(label_list)   # change to np array for future operations
 
 
 # In[114]:
