@@ -2,7 +2,10 @@
 # coding: utf-8
 
 # In[95]:
-
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 import argparse
 import glob
 import numpy as np
@@ -11,10 +14,6 @@ import matplotlib.image as img
 from scipy import misc
 import matplotlib.pyplot as plt
 import skimage.transform
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
 from os.path import basename as b
 from scipy.io import loadmat
 
@@ -51,9 +50,10 @@ def generate_dataset(image_paths,labels,dataset):
         image, or_height, or_width = prepare_image(image_paths[index])
         image_list.append(image)
         label = scale_label(labels[index], or_height, or_width)
-        label_list.append(label)
+        label_xy = label[0:2, :]
+        label_list.append(label_xy)
     print('Done processing the ' + dataset + ' dataset')
-    return image_list,label_list
+    return np.array(image_list), np.array(label_list)   # change to np array for future operations
 
 
 # In[114]:
@@ -98,6 +98,9 @@ def getLSPDataset(train_set_ratio=0.8,validation_set_ratio = 0.1):
     test_list,test_label = generate_dataset(image_list[test_indexes],joints[test_indexes],'test')
     
     return train_list,train_label,val_list,val_label,test_list,test_label
+    # *_list, *_label: list with length equals to num of examples
+    # each element in *_list is an image vectors of shape (227, 227, 3)
+    # each element in *_label is a joints vector of shape (2, 14)
 
 
 # In[115]:
