@@ -51,7 +51,8 @@ def generate_dataset(image_paths,labels,dataset):
         image, or_height, or_width = prepare_image(image_paths[index])
         image_list.append(image)
         label = scale_label(labels[index], or_height, or_width)
-        label_list.append(label)
+        label_xy = label[0:2, :]
+        label_list.append(label_xy)
     print('Done processing the ' + dataset + ' dataset')
     return np.array(image_list), np.array(label_list)   # change to np array for future operations
 
