@@ -98,6 +98,9 @@ def getLSPDataset(train_set_ratio=0.8,validation_set_ratio = 0.1):
     test_list,test_label = generate_dataset(image_list[test_indexes],joints[test_indexes],'test')
     
     return train_list,train_label,val_list,val_label,test_list,test_label
+    # *_list, *_label: list with length equals to num of examples
+    # each element in *_list is an image vectors of shape (227, 227, 3)
+    # each element in *_label is a joints vector of shape (3, 14)
 
 
 # In[115]:
