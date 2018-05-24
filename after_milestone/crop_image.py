@@ -161,7 +161,7 @@ def images_crop(images,Y_preds,Y_trues):
     '''
     Inputs: images is a list of length N and each element has shape 227*227*3
             Y_preds is a matrix of shape(N,2,14) for lsp dataset
-            Y_trues is a list of length N and each element has shape 2*14 for lsp dataset
+            Y_trues is a matrix of shape (N,2,14) for lsp dataset
             
     Return: crop_image_matrix is a matrix of shape(N,14,227,227,3) in lsp dataset
             actual_reshape_size_matrix is a matrix of shape(N,14,2,14) in lsp dataset. It indidcates the original shape of the bounding box
@@ -207,6 +207,8 @@ def images_crop(images,Y_preds,Y_trues):
             scaled_preds_label[i,j] = scaled_label_pred
             scaled_trues_label[i,j] = scaled_true_pred
             
+        # transpose/reshape to (N,227,227,-1)
+    crop_image_matrix = crop_image_matrix.transpose(0,2,3,4,1).reshape(N,227,227,-1)
     return crop_image_matrix,actual_reshape_size_matrix,scaled_preds_label,scaled_trues_label
 
 
